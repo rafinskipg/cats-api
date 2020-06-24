@@ -41,8 +41,54 @@ app.post('/cats', function(req, res) {
         error: err.message
       })
     })
-  
- 
+
+})
+
+app.get('/cats/:catId',  function(req, res) {
+  catsModule.getCatById(req.params.catId)
+    .then(result => {
+      if (!result) {
+        res.status(404).json({
+          error: 'Not found'
+        })
+      } else {
+        res.json(result)
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        error: err.message
+      })
+    })
+})
+
+app.delete('/cats/:catId',  function(req, res) {
+  catsModule.deleteCatById(req.params.catId)
+    .then(result => {
+      res.json({
+        deleted: true
+      })
+    })
+    .catch(err => {
+      res.status(500).send({
+        error: err.message
+      })
+    })
+})
+
+
+app.put('/cats/:catId',  function(req, res) {
+  catsModule.updateCatById(req.params.catId, req.body)
+    .then(result => {
+      res.json({
+        updated: true
+      })
+    })
+    .catch(err => {
+      res.status(500).send({
+        error: err.message
+      })
+    })
 })
 
 // Connect to DB
